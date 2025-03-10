@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, String, Boolean, ForeignKey
 from sqlalchemy.orm import relationship
-from config import Base, session, engine  # Import engine
+from setup import Base, session, engine  # Import engine
 
 class Role(Base):
     __tablename__ = 'roles'
@@ -23,7 +23,7 @@ class Role(Base):
 
     def understudy(self):
         hired_auditions = [a for a in self.auditions if a.hired]
-        return hired_auditions[1] if len(hired_auditions) > 1 else "No actor has been hired for understudy for this role"
+        return hired_auditions[1] if len(hired_auditions) > 1 else "No actor has been hired"
 
 class Audition(Base):
     __tablename__ = 'auditions'
@@ -35,7 +35,7 @@ class Audition(Base):
     hired = Column(Boolean, default=False)
     role_id = Column(Integer, ForeignKey('roles.id'))
 
-    # Relationship (many-to-one)
+    # Relationship many-to-one
     role = relationship('Role', back_populates='auditions')
 
     def call_back(self):

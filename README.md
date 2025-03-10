@@ -21,8 +21,8 @@ The **Theater Auditions Manager** is a command-line application that manages aud
 
 ##  Installation & Setup
 ### 1 Clone the repository
-```sh
-git clone https://github.com/scarzze/python-p3-defining-schema-with-sqlalchemy.git
+```s
+git clone git@github.com:miriam590/python-p3-theater-work.git
 cd python-p3-defining-schema-with-sqlalchemy
 ```
 
@@ -61,9 +61,7 @@ python debug.py
 -  **CLI-driven interface** for seamless interaction
 -  **SQLite database persistence**
 
-##  License
-This project is licensed under the **MIT License**.
 
 ##  Contact
-For any issues or contributions, reach out via GitHub: [@scarzze](https://github.com/scarzze)
+For any issues or contributions, reach out via GitHub: https://github.com/miriam590/python-p3-theater-work.git
 

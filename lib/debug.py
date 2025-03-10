@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 from sqlalchemy.orm import sessionmaker
+from sqlalchemy.exc import IntegrityError
 from models import Base, engine, Role, Audition
 
 # Initialize session
@@ -9,26 +10,51 @@ session = Session()
 
 # Create tables if they don't exist
 Base.metadata.create_all(engine)
-print("Database created successfully!")
+print("Database successfully created!")
+
+# Function to add roles safely
+def add_role(character_name):
+    """Adds a role only if it does not already exist."""
+    existing_role = session.query(Role).filter_by(character_name=character_name).first()
+    if existing_role:
+        print(f"Role '{character_name}' already exists, skipping.")
+    else:
+        new_role = Role(character_name=character_name)
+        session.add(new_role)
+        try:
+            session.commit()
+            print(f"Role '{character_name}' added successfully!")
+        except IntegrityError:
+            session.rollback()
+            print(f"Failed to add role '{character_name}'. It might already exist.")
 
 # Add roles
-role1 = Role(character_name="Scarzze")
-role2 = Role(character_name="Omello")
-role2 = Role(character_name="joy")
+add_role("Mirriam")
+add_role("Joy")
+add_role("Shelcy") 
 
 
-session.add_all([role1, role2])
-session.commit()
-print("Roles zimeongezwa!")
 
-# Add auditions
-audition1 = Audition(actor="Willy Paul", location="Racecourse", phone="254789034321", hired=False, role=role1)
-audition2 = Audition(actor="Guy Fawkes", location="Theater", phone="254789034322", hired=False, role=role2)
-audition3 = Audition(actor="Scar Mkadinali", location="Circle", phone="254789034323", hired=False, role=role1)  # Fixed role
+# Fetch roles after insertion
+role1 = session.query(Role).filter_by(character_name="Mirriam").first()
+role2 = session.query(Role).filter_by(character_name="Joy").first()
+role3 = session.query(Role).filter_by(character_name="Shelcy").first()
 
-session.add_all([audition1, audition2, audition3])
-session.commit()
-print("Auditions zimeongezwa!")
+# Add auditions with correct foreign key references
+if role1 and role2 and role3:  # Ensure roles exist before adding auditions
+    auditions = [
+        Audition(actor="Jane Kemboi", location="Reception", phone="254722034321", hired=False, role_id=role1.id),
+        Audition(actor="Marion Ken", location="Counter", phone="254787734322", hired=False, role_id=role2.id),
+        Audition(actor="Tess Carl", location="Theatre", phone="254789033323", hired=False, role_id=role1.id)
+    ]
+    
+    session.add_all(auditions)
+    try:
+        session.commit()
+        print("Auditions added successfully!")
+    except IntegrityError:
+        session.rollback()
+        print("Failed to add some auditions. Check for data conflicts.")
 
 # Debugging mode
 if __name__ == '__main__':
