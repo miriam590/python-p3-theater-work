@@ -1,84 +1,69 @@
-# Phase 3 Mock Code Challenge: Theater Work
+# Theater Auditions Manager
 
-## Learning Goals
+##  Project Overview
+The **Theater Auditions Manager** is a command-line application that manages auditions and roles for a theater production. It uses **SQLAlchemy ORM** to interact with an SQLite database, allowing users to track actors, their auditions, and the roles they are assigned to.
 
-- Write SQLAlchemy migrations.
-- Connect between tables using SQLAlchemy relationships.
-- Use SQLAlchemy to run CRUD statements in the database.
+## Tech Stack
+- **Python** 
+- **SQLAlchemy** (ORM & Migrations)
+- **SQLite** (Database)
+- **CLI (Command-Line Interface)**
 
-***
+## Project Structure
+```
+📁 python-p3-defining-schema-with-sqlalchemy
+│── app.py          # Main CLI application
+│── models.py       # Database models using SQLAlchemy
+│── database.py     # Database connection & initialization
+│── debug.py        # Debugging & troubleshooting
+│── README.md       # Project documentation
+```
 
-## Key Vocab
+##  Installation & Setup
+### 1 Clone the repository
+```sh
+git clone https://github.com/scarzze/python-p3-defining-schema-with-sqlalchemy.git
+cd python-p3-defining-schema-with-sqlalchemy
+```
 
-- **Schema**: the blueprint of a database. Describes how data relates to other
-  data in tables, columns, and relationships between them.
-- **Persist**: save a schema in a database.
-- **Engine**: a Python object that translates SQL to Python and vice-versa.
-- **Session**: a Python object that uses an engine to allow us to
-  programmatically interact with a database.
-- **Transaction**: a strategy for executing database statements such that
-  the group succeeds or fails as a unit.
-- **Migration**: the process of moving data from one or more databases to one
-  or more target databases.
-  
-***
+### 2️ Create a Virtual Environment & Install Dependencies
+```sh
+python3 -m venv venv
+source venv/bin/activate   # On Windows use `venv\Scripts\activate`
+pip install -r requirements.txt
+```
 
-## Introduction
+### 3️ Initialize the Database
+```sh
+python database.py
+```
 
-The Flatiron Theater Company is holding auditions!
+##  Usage
+### Running the CLI App
+```sh
+python app.py
+```
+### Available Commands:
+- **Create Roles & Auditions**
+- **View All Roles & Assigned Actors**
+- **Assign Auditioned Actors to Roles**
+- **Find the Lead & Understudy for a Role**
 
-An actor may only `Audition` for one `Role`, while a `Role` may have many
-`Auditions` for it!
+##  Debugging
+To enable **interactive debugging**, use:
+```sh
+python debug.py
+```
 
-![one to many](https://curriculum-content.s3.amazonaws.com/phase-3/active-record-theater-work/one_to_many.png)
+##  Features
+-  **Create, Read, Update, Delete (CRUD) operations** for Roles & Auditions
+-  **ORM-powered data handling** for structured queries
+-  **CLI-driven interface** for seamless interaction
+-  **SQLite database persistence**
 
-## Getting started
+##  License
+This project is licensed under the **MIT License**.
 
-Run `pipenv install; pipenv shell`
+##  Contact
+For any issues or contributions, reach out via GitHub: [@scarzze](https://github.com/scarzze)
 
-## Migrations
-
-Create your migrations.
-
-- `Auditions` should have an actor (string), location (string) and belong_to a
-  role (integer).
-- `Roles` should only have a character_name.
-
-### `auditions` Table
-
-| Column | Type |
-| --- | --- |
-| actor | string |
-| location | string |
-| phone | integer |
-| hired | boolean |
-| role_id | integer |
-
-### `roles` Table
-
-| Column | Type |
-| --- | --- |
-| character_name | string |
-  
-## Relationship
-
-- What relationships will this need (i.e. one-to-one, one-to-many, and
-  many-to-many)?
-
-## Audition
-
-- `Audition.role` returns an instance of role associated with this audition.
-- `Audition.call_back()` will change the the hired attribute to `True`.
-
-## Roles
-
-- `Role.auditions` returns all of the auditions associated with this role.
-- `Role.actors` returns a list of names from the actors associated with this
-  role.
-- `Role.locations` returns a list of locations from the auditions associated
-  with this role.
-- `Role.lead()` returns the first instance of the audition that was hired for
-  this role or returns a string 'no actor has been hired for this role'.
-- `Role.understudy()` returns the second instance of the audition that was hired
-  for this role or returns a string 'no actor has been hired for understudy for
-  this role'.
